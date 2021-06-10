@@ -3,7 +3,6 @@ const sqlQuery = require('../config/db');
 module.exports = {
     getStudents: async (req, res) => {
         const result = await sqlQuery('SELECT * FROM student');
-        console.log(result);
         return res.render('student/list', {
             activePath: '/students',
             students: result
@@ -23,7 +22,10 @@ module.exports = {
     },
 
     getRegistration: async (req, res) => {
-        // ..
+        var id = req["params"]["id"];
+        
+        // console.log(id)
+        return res.render('student/')
     },
 
     postRegistration: async (req, res) => {

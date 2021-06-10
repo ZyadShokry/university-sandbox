@@ -98,3 +98,13 @@ VALUES (6, 1),
        (33, 29),
        (35, 22),
        (36, 32);
+
+
+CREATE TABLE registration
+(
+    student_id int,
+    course_id int,
+    primary key(student_id, course_id),
+    foreign key (student_id) references student (id),
+    foreign key (course_id) references course (id)
+);

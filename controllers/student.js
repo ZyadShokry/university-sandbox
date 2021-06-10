@@ -1,4 +1,6 @@
+const lodash = require('lodash');
 const sqlQuery = require('../config/db');
+const studentService = require('../services/student');
 
 module.exports = {
     getStudents: async (req, res) => {

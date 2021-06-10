@@ -99,12 +99,12 @@ VALUES (6, 1),
        (35, 22),
        (36, 32);
 
-
 CREATE TABLE registration
 (
-    student_id int,
-    course_id int,
-    primary key(student_id, course_id),
+    student_id int           not null,
+    course_id  int           not null,
+    mark       decimal(6, 2) null,
+    primary key (student_id, course_id),
     foreign key (student_id) references student (id),
     foreign key (course_id) references course (id)
 );

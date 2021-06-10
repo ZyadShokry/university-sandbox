@@ -1,0 +1,25 @@
+<%- include('../includes/head.ejs') %>
+    <h1 class="my-4">Report</h1>
+    <%- include('./profile.ejs') %>
+    <% for (let semester of Object.keys(groupedCourses).sort((a, b) => a - b)) { %>
+        <h4 class="my-4">Semester <%= semester %></h4>
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th scope="col">Course Id</th>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Marks (out of 100)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let course of groupedCourses[semester]) { %>
+                    <tr>
+                        <th scope="row"><%= course.id %></th>
+                        <td><%= course.name %></td>
+                        <td><%= typeof course.mark === 'string' ? course.mark : '-' %></td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    <% } %>
+<%- include('../includes/end.ejs') %>

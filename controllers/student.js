@@ -1,6 +1,8 @@
 const lodash = require('lodash');
 const sqlQuery = require('../config/db');
 const studentService = require('../services/student');
+const gpaSystem = require('../services/gpa');
+// const course = require('./course');
 
 module.exports = {
     getStudents: async (req, res) => {
@@ -117,12 +119,13 @@ module.exports = {
         const stud_id = req["params"]["id"];
         const student = await sqlQuery(`SELECT * FROM student WHERE id = '${stud_id}'`)
         const unmarked_courses = await sqlQuery(`SELECT course_id FROM registration JOIN course WHERE course_id = course.id AND registration.student_id = '${stud_id}' AND mark IS NULL;`)
+        console.log(unmarked_courses);
         let courses_id = [];
         for(var i = 0; i < unmarked_courses.length; i++){
             courses_id.push(unmarked_courses[i]['course_id']);
         }
         var courses = []
-        if(courses.length > 0){
+        if(unmarked_courses.length > 0){
             courses = await sqlQuery(`SELECT * FROM course WHERE id in (${courses_id.join()})`);
         }
         return res.render('student/addMarks', {
@@ -134,18 +137,26 @@ module.exports = {
     },
 
     postAddMarks: async (req, res) => {
-        const stud_id = req["params"]["id"];
+        console.log("HEREE")
+        var stud_id = req["params"]["id"];
         var marks = req.body;
         for(course in marks){
             if ((!isNaN(marks[course]) && (marks[course]!= ""))){
                 console.log(marks[course]);
+                console.log("YARE YARE")
                 await sqlQuery(`UPDATE registration SET mark = ${marks[course]} WHERE student_id = '${stud_id}' AND course_id = '${course}'`);
             }
         }
+        console.log("HIII")
+        var gpa = await studentService.getTotalGPA(stud_id)
+        var sem = await studentService.getSemester(stud_id)
+        await sqlQuery(`UPDATE student SET gpa = ${gpa}, semester = ${sem} WHERE id = ${stud_id}`)
+
         return res.redirect('/students');
     },
 
     getViewReport: async (req, res) => {
-        // ..
+        const stud_id = req["params"]["id"];
+        const reg_courses = await sqlQuery(`SELECT course_id FROM registration JOIN course WHERE course_id = course.id AND registration.student_id = '${stud_id}';`)
     }
 };

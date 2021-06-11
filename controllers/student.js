@@ -32,7 +32,7 @@ module.exports = {
         // Fetch semester courses and place it in an array
         const pre_achieved = await sqlQuery(`SELECT prerequisite.course_id, count(prerequisite.course_id) as count FROM prerequisite JOIN (SELECT course_id FROM student JOIN registration on id = student_id WHERE mark >= 60 AND id = ${stud_id})as t on pre_id = t.course_id group by prerequisite.course_id;`)
         var pre_taken = pre_achieved.map(i => i.course_id);
-        var x = pre_achieved.map(i => i.count);
+        var count1 = pre_achieved.map(i => i.count);
         var pre_of_courses = []
         var count2 = []
         if (pre_taken.length != 0){

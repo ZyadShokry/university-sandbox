@@ -115,7 +115,32 @@ module.exports = {
     },
 
     getViewReport: async (req, res) => {
-        const stud_id = req["params"]["id"];
-        const reg_courses = await sqlQuery(`SELECT course_id FROM registration JOIN course WHERE course_id = course.id AND registration.student_id = '${stud_id}';`)
+        const stud_id = req.params.id;
+        const student = await sqlQuery(`SELECT * FROM student WHERE id = '${stud_id}'`)
+        const reg_courses = await sqlQuery(`SELECT course_id, mark, name, semester FROM registration JOIN course WHERE course_id = course.id AND
+        registration.student_id ='${stud_id}';`)
+        const destinct_semester = await sqlQuery(`SELECT semester FROM student WHERE id ='${stud_id}';`)
+        
+        var groupedCourses = [];
+        for (var k =0; k< destinct_semester[0]['semester']; k++ ){
+            var sem = k+1
+            var semester_courses = await sqlQuery(`SELECT course_id as id, mark, name FROM registration JOIN course WHERE course_id = course.id AND
+                registration.student_id ='${stud_id}' AND semester = '${sem}';`)
+            groupedCourses[sem] = []
+            // console.log(groupedCourses)
+            for (var i = 0; i < semester_courses.length; i ++){
+                console.log("HII")
+                groupedCourses[sem].push(semester_courses[i]);
+            }
+   
+        }
+        console.log(groupedCourses)
+        return res.render('student/report',{
+            activePath: 'students',
+            student: student[0],
+            groupedCourses: groupedCourses
+    });
+    
+
     }
 };

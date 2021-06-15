@@ -4,7 +4,7 @@
 <%- include('../includes/head.ejs') %>
     <div class="row my-4 align-items-center">
         <div class="col">
-            <h1 class="my-0">List</h1>
+            <h1 class="my-0">Courses</h1>
         </div>
     </div>
     <table class="table table-striped text-center">
@@ -22,7 +22,12 @@
                     <th scope="row"><%= course.id %></th>
                     <td><%= course.name %></td>
                     <td><%= course.semester %></td>
-                    <td><%= course.prerequisites || '-' %></td>
+                    <% if(course.prerequisites){ %>
+                        <td><%= course.prerequisites %></td>
+    
+                        <% } else{ %>  
+                            <td><%= '-' %></td>
+                        <% } %>
                 </tr>
             <% } %>
         </tbody>

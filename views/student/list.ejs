@@ -23,7 +23,12 @@
                     <th scope="row"><%= student.id %></th>
                     <td><%= student.name %></td>
                     <td><%= student.semester %></td>
-                    <td><%= student.gpa?.toFixed(2) || '-' %></td>
+                    <% if(student.gpa){ %>
+                        <td><%= student.gpa.toFixed(2) %></td>
+    
+                        <% } else{ %>  
+                            <td><%= '-' %></td>
+                        <% } %>
                     <td>
                         <div class="dropdown">
                             <button class="dropdown border-0 bg-transparent" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,6 +38,8 @@
                                 <a class="dropdown-item" href="/students/<%= student.id %>/register">Register Courses</a>
                                 <a class="dropdown-item" href="/students/<%= student.id %>/addMarks">Add Marks</a>
                                 <a class="dropdown-item" href="/students/<%= student.id %>/report">View Report</a>
+                                <a class="dropdown-item" href="/students/<%= student.id %>/remove">Remove Student</a>
+
                             </div>
                         </div>
                     </td>

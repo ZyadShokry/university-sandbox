@@ -1,22 +1,28 @@
 <%- include('../includes/head.ejs') %>
     <h1 class="my-4">Register Courses</h1>
     <%- include('./profile.ejs') %>
-    <form method="POST" action="/students/<%= student.id %>/register">
-        <div class="form-group">
-            <label for="courses">Available Courses</label>
-            <select
-                multiple
-                class="form-control"
-                id="courses"
-                name="courses"
-                size="5">
-                <% for (let course of allowedCourses) { %>
-                    <option value="<%= course.id %>"><%= course.name %></option>
-                <% } %>
-            </select>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-dark px-5">Submit</button>
-        </div>
-    </form>
+    <% if(allowedCourses){ %>
+        <form method="POST" action="/students/<%= student.id %>/register">
+            <div class="form-group">
+                <label for="courses">Available Courses</label>
+                <select
+                    multiple
+                    class="form-control"
+                    id="courses"
+                    name="courses"
+                    size="5">
+                    <% for (let course of allowedCourses) { %>
+                        <option value="<%= course.id %>"><%= course.name %></option>
+                    
+                    <% } %>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-dark px-5">Submit</button>
+            </div>
+        </form>
+    <% } else{ %>  
+    <h3 class = "my-4"> NO MORE ALLOWED COURSES </h3>
+    <% } %>
+
 <%- include('../includes/end.ejs') %>

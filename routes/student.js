@@ -31,5 +31,7 @@ router.post('/students/:id/addMarks', studentController.postAddMarks);
 
     // Display report
 router.get('/students/:id/report', studentController.getViewReport);
+// Remove student
+router.get('/students/:id/remove', studentController.getRemoveStudent);
 
 module.exports = router;

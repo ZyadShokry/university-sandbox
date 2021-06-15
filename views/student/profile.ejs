@@ -9,6 +9,11 @@
     </div>
     <div class="row">
         <label class="col-sm-2"><b>GPA</b></label>
-        <div class="col-sm-10"><%= student.gpa?.toFixed(2) || '-' %></div>
+        <% if(student.gpa){ %>
+            <div><%= student.gpa.toFixed(2) %></div>
+
+            <% } else{ %>  
+                <div><%= '-' %></div>
+            <% } %>
     </div>
 </div>

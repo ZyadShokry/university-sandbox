@@ -17,11 +17,12 @@ router.post('/students', studentController.postNewStudent);
 
 // Register courses per student
     // Display form
-    router.get('/students/:id/register', studentController.getRegistration);
+router.get('/students/:id/register', studentController.getRegistration);
     // Save
 router.post('/students/:id/register', studentController.postRegistration);
 
 //// Drop courses
+    // Display foorm
 router.get('/students/:id/drop', studentController.getDrop);
     // Save
 router.post('/students/:id/drop', studentController.postDrop);
@@ -34,7 +35,7 @@ router.get('/students/:id/addMarks', studentController.getAddMarks);
 router.post('/students/:id/addMarks', studentController.postAddMarks);
 
 
-    // Display report
+// Display report
 router.get('/students/:id/report', studentController.getViewReport);
 // Remove student
 router.get('/students/:id/remove', studentController.getRemoveStudent);

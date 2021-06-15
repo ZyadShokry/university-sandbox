@@ -75,10 +75,8 @@ module.exports = {
         }
         else{
             var exists = await sqlQuery(`SELECT * FROM registration WHERE student_id = ${student_id} AND course_id = ${registered}`)
-            console.log(exists)
-            console.log(exists.length);
             if (exists.length == 0){await sqlQuery(`INSERT INTO registration (student_id, course_id) values ('${student_id}', '${registered}')`);}
-            else{console.log("HELLO");await sqlQuery(`UPDATE registration SET mark = NULL WHERE student_id = ${student_id} AND course_id = ${registered}`);}
+            else{await sqlQuery(`UPDATE registration SET mark = NULL WHERE student_id = ${student_id} AND course_id = ${registered}`);}
         }
         return res.redirect('/students');
     },
@@ -130,18 +128,29 @@ module.exports = {
             groupedCourses[sem] = []
             // console.log(groupedCourses)
             for (var i = 0; i < semester_courses.length; i ++){
-                console.log("HII")
                 groupedCourses[sem].push(semester_courses[i]);
             }
    
         }
-        console.log(groupedCourses)
         return res.render('student/report',{
             activePath: 'students',
             student: student[0],
             groupedCourses: groupedCourses
     });
     
+
+    },
+
+    getRemoveStudent: async (req, res) => {
+
+        const stud_id = req.params.id;
+        await sqlQuery(`DELETE FROM registration WHERE student_id = ${stud_id}`);
+        await sqlQuery(`DELETE FROM student WHERE id = ${stud_id}`);
+        const result = await sqlQuery('SELECT * FROM student');
+        return res.render('student/list', {
+            activePath: '/students',
+            students: result
+        });
 
     }
 };

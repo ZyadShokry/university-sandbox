@@ -39,13 +39,14 @@ module.exports = {
             pre_of_courses = await sqlQuery(`SELECT course_id, count(course_id) as count FROM prerequisite WHERE course_id in  (${pre_taken.join()}) GROUP BY course_id;`);
             count2 = pre_of_courses.map(i => i.count);
             }
+        var available_pre = []
+
         for(var i = 0; i < count1.length; i++){
             if(count1[i] == count2[i]){ available_pre.push(pre_taken[i])}
         }
         var no_pre = await sqlQuery(`SELECT id from course left join prerequisite ON course.id = prerequisite.course_id LEFT JOIN registration on id = registration.course_id  WHERE pre_id IS NULL and semester <= ${student[0].semester} AND (${stud_id} not in (SELECT student_id from registration WHERE course_id = course.id) OR (student_id = ${stud_id} AND mark <60))`)
         no_pre = no_pre.map(i => i.id)
 
-        var available_pre = []
         if (available_pre.length > 0){
             var available_pre = await sqlQuery(`SELECT id FROM course LEFT JOIN registration ON course.id = registration.course_id WHERE course.id IN (${available_pre.join()}) AND course.semester <=${student[0].semester} AND (${stud_id} NOT IN (SELECT student_id FROM registration WHERE course_id = id) OR (student_id = ${stud_id} AND mark < 60));`)
         }

@@ -17,9 +17,14 @@ router.post('/students', studentController.postNewStudent);
 
 // Register courses per student
     // Display form
-router.get('/students/:id/register', studentController.getRegistration);
+    router.get('/students/:id/register', studentController.getRegistration);
     // Save
 router.post('/students/:id/register', studentController.postRegistration);
+
+//// Drop courses
+router.get('/students/:id/drop', studentController.getDrop);
+    // Save
+router.post('/students/:id/drop', studentController.postDrop);
 
 
 // Add marks per student

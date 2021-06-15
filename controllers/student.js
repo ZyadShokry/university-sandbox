@@ -152,5 +152,43 @@ module.exports = {
             students: result
         });
 
+    }, 
+
+    getDrop: async (req, res) => {
+        // Get student id and semester
+        const stud_id = req.params.id;
+        const student = await sqlQuery(`SELECT * FROM student WHERE id = '${stud_id}'`)
+        // Fetch current courses 
+        const dropable_courses = await sqlQuery(`SELECT course_id as id, name FROM course INNER JOIN  registration on course_id=id where student_id=${stud_id} and mark is NULL;`)
+        
+        
+        return res.render('student/drop',{
+                activePath: 'students',
+                student: student[0],
+                allowedCourses: dropable_courses
+        });
+    },
+
+    postDrop: async (req, res) => {
+        // get student id and chosen courses
+        const student_id = req.params.id;
+        var registered = req.body.courses;
+        // console.log((registered));
+
+        
+        // check if the user chose more than one array and add the selected courses
+        if (typeof(registered) == 'object'){
+            for(var i = 0; i < registered.length; i++){
+
+                await sqlQuery(`DELETE  from registration where student_id =${student_id} and course_id=${registered[i]}`);
+                }
+            }
+
+        else{
+
+            await sqlQuery(`DELETE  from registration where student_id = '${student_id}'and course_id=${registered}`);
+
+        }
+        return res.redirect('/students');
     }
 };
